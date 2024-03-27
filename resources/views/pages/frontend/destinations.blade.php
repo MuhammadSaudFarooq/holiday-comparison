@@ -17,9 +17,10 @@
                         <div class="sort-data">
                             <label for="text">Sort By</label>
                             <select name="sort">
-                                <option value="1">Most Popular</option>
-                                <option value="1">Most Popular</option>
-                                <option value="1">Most Popular</option>
+                                <option value="">Default</option>
+                                <option value="most-popular">Most Popular</option>
+                                <option value="hight-to-low">Price: Hight to Low</option>
+                                <option value="low-to-high">Price: Low to High</option>
                             </select>
                         </div>
                     </div>
@@ -335,20 +336,32 @@
                                     @foreach ($flight_data[1] as $key => $value)
                                         @php
                                             $link = '';
-                                            if(isset($_POST['destination']) && $_POST['destination'] != '') {
-                                                $link = '?id='.$_POST['destination'].'&type=flight';
+                                            if (isset($_POST['destination']) && $_POST['destination'] != '') {
+
+                                                $link =
+                                                    '?originLocationCode=' .
+                                                    $_POST['airport'] .
+                                                    '&destinationLocationCode=' .
+                                                    $_POST['destination'] .
+                                                    '&departureDate=' .
+                                                    $_POST['date'] .
+                                                    '&adults=' .
+                                                    $_POST['adults'] .
+                                                    '&children=' .
+                                                    $_POST['children'] .
+                                                    '&type=flight';
                                             }
-                                            echo '<pre>';
-                                            print_r($value);
+                                            // echo '<pre>';
+                                            // print_r($value);
                                             // $value->price->currency
                                             // $value->price->total
                                             // $value->numberOfBookableSeats
                                             // $value->itineraries[0]->duration
                                             // $value->itineraries[0]->segments
-                                            echo '</pre>';
+                                            // echo '</pre>';
                                         @endphp
                                         <div class="col-md-6 load-item-2">
-                                            <a href="{{ url('/offers-detail'.$link) }}">
+                                            <a href="{{ url('/offers-detail' . $link . '&id=' . $value->id) }}">
                                                 <div class="popular_box">
                                                     <div class="img">
                                                         <img decoding="async" loading="lazy"

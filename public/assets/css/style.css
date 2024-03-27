@@ -189,7 +189,7 @@ body.ovr-hiddn:before {
     margin: auto;
 }
 
-.form-signin>form {
+.form-signin > form {
     width: 20%;
     margin: 0 auto;
 }
@@ -198,7 +198,7 @@ body.ovr-hiddn:before {
     font-weight: 400;
 }
 
-.auth-page .hero_section>div {
+.auth-page .hero_section > div {
     display: none;
 }
 
@@ -211,7 +211,6 @@ body.ovr-hiddn:before {
 }
 
 @media (min-width: 1200px) {
-
     .container,
     .container-lg,
     .container-md,
@@ -1722,11 +1721,11 @@ section.offer_detail_sec .inner-det {
     transition: all 0.4s ease-in-out;
 }
 
-.En_btn .toggle input:checked+.slider {
+.En_btn .toggle input:checked + .slider {
     background: var(--yellow);
 }
 
-.En_btn .toggle input:checked+.slider::before {
+.En_btn .toggle input:checked + .slider::before {
     background-color: var(--white);
     transform: translateX(calc(var(--width) - var(--height)));
 }
@@ -1744,11 +1743,11 @@ section.offer_detail_sec .inner-det {
     align-items: center;
 }
 
-.En_btn .toggle input:checked~.labels::after {
+.En_btn .toggle input:checked ~ .labels::after {
     opacity: 0;
 }
 
-.En_btn .toggle input:checked~.labels::before {
+.En_btn .toggle input:checked ~ .labels::before {
     opacity: 1;
     color: #000;
 }
@@ -1796,12 +1795,12 @@ section.offer_detail_sec .inner-det {
 }
 
 /* On mouse-over, add a grey background color */
-.radio-button-container:hover input~.checkmark {
+.radio-button-container:hover input ~ .checkmark {
     border-color: rgba(0, 0, 0, 0.5);
 }
 
 /* When the radio button is checked */
-.radio-button-container input:checked~.checkmark {
+.radio-button-container input:checked ~ .checkmark {
     background-color: rgba(0, 0, 0, 0);
     border-color: var(--yellow);
 }
@@ -1814,7 +1813,7 @@ section.offer_detail_sec .inner-det {
 }
 
 /* Show the indicator (dot/circle) when checked */
-.radio-button-container input:checked~.checkmark:after {
+.radio-button-container input:checked ~ .checkmark:after {
     display: block;
 }
 
@@ -1934,7 +1933,7 @@ section.offer_detail_sec .inner-det .accordion .card .card-body {
 
 .detail_box_img .content h2 {
     color: var(--white);
-    font-size: 32px;
+    font-size: 56px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -2040,7 +2039,8 @@ section.offer_detail_sec .inner-det .accordion .card .card-body {
 
 .inner-listing-data {
     display: flex;
-    gap: 3%;
+    gap: 2%;
+    flex-wrap: wrap;
 }
 
 section.offer_detail_sec .inner-listing-data:not(:last-child) {
@@ -2053,6 +2053,16 @@ section.offer_detail_sec .inner-listing-data:not(:last-child) {
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.07);
     display: inline-block;
     padding: 30px 40px;
+    flex: 0 0 32%;
+    max-width: 32%;
+    margin-bottom: 20px;
+}
+
+.inner-listing-data > h2 {
+    width: 100%;
+    color: var(--green);
+    font-size: 26px;
+    font-weight: 600;
 }
 
 .inner-listing-data .cards h3 {
