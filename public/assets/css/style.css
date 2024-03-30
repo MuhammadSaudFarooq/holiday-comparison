@@ -210,6 +210,11 @@ body.ovr-hiddn:before {
     width: 30px;
 }
 
+.hotel-single-page .star-rating {
+    font-size: 30px !important;
+    color: #f0f000 !important;
+}
+
 @media (min-width: 1200px) {
     .container,
     .container-lg,
@@ -2071,8 +2076,8 @@ section.offer_detail_sec .inner-listing-data:not(:last-child) {
     font-style: normal;
     font-weight: 600;
     line-height: 25px;
-    /* 138.889% */
     text-wrap: nowrap;
+    white-space: break-spaces;
 }
 
 .inner-listing-data .cards ul {

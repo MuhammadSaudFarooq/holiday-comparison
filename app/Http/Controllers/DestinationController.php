@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class DestinationController extends Controller
 {
@@ -83,15 +84,25 @@ class DestinationController extends Controller
             $radius = $request->radius;
             $radiusUnit = 'KM';
             $amenities = 'SWIMMING_POOL, SPA, FITNESS_CENTER, AIR_CONDITIONING, RESTAURANT, PARKING, PETS_ALLOWED, AIRPORT_SHUTTLE, BUSINESS_CENTER, DISABLED_FACILITIES, WIFI, MEETING_ROOMS, NO_KID_ALLOWED, TENNIS, GOLF, KITCHEN, ANIMAL_WATCHING, BABY-SITTING, BEACH, CASINO, JACUZZI, SAUNA, SOLARIUM, MASSAGE, VALET_PARKING, BAR or LOUNGE, KIDS_WELCOME, NO_PORN_FILMS, MINIBAR, TELEVISION, WI-FI_IN_ROOM, ROOM_SERVICE, GUARDED_PARKG, SERV_SPEC_MENU';
-            $rating = ($request->rating == 0) ? '1, 2, 3, 4, 5' : $request->rating;
+            $rating = $request->rating;
             $hotelSource = 'ALL';
-            $hotel_by_city_url = "https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city?cityCode=" . $city."&radius=".$radius."&radiusUnit=".$radiusUnit."&amenities=".$amenities."&ratings=".$rating."&hotelSource=".$hotelSource;
+            $hotel_by_city_url = "https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city?cityCode=" . $city . "&radius=" . $radius . "&radiusUnit=" . $radiusUnit . "&amenities=" . $amenities . "&ratings=" . $rating . "&hotelSource=" . $hotelSource;
 
             if ($auth_res->access_token != '') {
                 $access_token = $auth_res->access_token;
 
                 // Get Hotels by City
-                $hotel_by_city_ch = curl_init();
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $access_token,
+                ])->get($hotel_by_city_url);
+
+                if ($response->successful()) {
+                    $hotel_by_city_res = $response->json();
+                    foreach ($hotel_by_city_res as $value) {
+                        $data['hotel_data'][] = $value;
+                    }
+                }
+                /* $hotel_by_city_ch = curl_init();
                 curl_setopt($hotel_by_city_ch, CURLOPT_URL, $hotel_by_city_url);
                 curl_setopt($hotel_by_city_ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($hotel_by_city_ch, CURLOPT_HTTPHEADER, [
@@ -105,7 +116,8 @@ class DestinationController extends Controller
                 $hotel_by_city_res = json_decode($hotel_by_city_res);
                 foreach ($hotel_by_city_res as $value) {
                     $data['hotel_data'][] = $value;
-                }
+                } */
+
                 $data['type'] = 'hotel';
                 // echo "<pre>";
                 // echo "----- Hotel by City -----<br>";

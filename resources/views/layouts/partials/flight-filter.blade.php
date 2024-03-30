@@ -109,11 +109,19 @@
                         <div class="select_opt">
                             <div class="box1">
                                 <label for="">City</label>
+                                @php
+                                    $city = '';
+                                    if (isset($_POST['city']) && $_POST['city'] != '') {
+                                        $city = $_POST['city'];
+                                    } elseif (isset($_GET['city']) && $_GET['city'] != '') {
+                                        $city = $_GET['city'];
+                                    }
+                                @endphp
                                 <select name="city" required>
                                     <option value="" disabled selected>Select city...</option>
                                     @foreach ($iata_codes as $key => $value)
                                         <option value="{{ $value['iata'] }}"
-                                            {{ isset($_POST['city']) && $_POST['city'] == $value['iata'] ? 'selected' : '' }}>
+                                            {{ $city == $value['iata'] ? 'selected' : '' }}>
                                             {{ $value['name'] }}</option>
                                     @endforeach
                                 </select>
@@ -122,21 +130,36 @@
 
                             <div class="box1">
                                 <label for="">Radius</label>
+                                @php
+                                    $radius = '';
+                                    if (isset($_POST['radius']) && $_POST['radius'] != '') {
+                                        $radius = $_POST['radius'];
+                                    } elseif (isset($_GET['radius']) && $_GET['radius'] != '') {
+                                        $radius = $_GET['radius'];
+                                    }
+                                @endphp
                                 <input type="number" name="radius"
-                                    value="{{ isset($_POST['radius']) && $_POST['radius'] != '' ? $_POST['radius'] : '5' }}"
-                                    min="1" required>
+                                    value="{{ $radius != '' ? $radius : '5' }}" min="1" required>
                             </div>
 
                             <div class="box1">
                                 <label for="">Rating</label>
+                                @php
+                                    $rating = '';
+                                    if (isset($_POST['rating']) && $_POST['rating'] != '') {
+                                        $rating = $_POST['rating'];
+                                    } elseif (isset($_GET['rating']) && $_GET['rating'] != '') {
+                                        $rating = $_GET['rating'];
+                                    }
+                                @endphp
                                 <select name="rating">
-                                    <option value="" disabled selected>Choose rating...</option>
+                                    <option value="1, 2, 3, 4, 5" selected>Choose rating...</option>
                                     @php
                                         for ($i = 1; $i <= 5; $i++) {
                                             echo "<option value='" .
                                                 $i .
                                                 "' " .
-                                                (isset($_POST['rating']) && $_POST['rating'] == $i ? 'selected' : '') .
+                                                ($rating == $i ? 'selected' : '') .
                                                 '>' .
                                                 $i .
                                                 '</option>';

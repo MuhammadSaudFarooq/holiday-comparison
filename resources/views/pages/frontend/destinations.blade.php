@@ -337,7 +337,6 @@
                                         @php
                                             $link = '';
                                             if (isset($_POST['destination']) && $_POST['destination'] != '') {
-
                                                 $link =
                                                     '?originLocationCode=' .
                                                     $_POST['airport'] .
@@ -351,14 +350,6 @@
                                                     $_POST['children'] .
                                                     '&type=flight';
                                             }
-                                            // echo '<pre>';
-                                            // print_r($value);
-                                            // $value->price->currency
-                                            // $value->price->total
-                                            // $value->numberOfBookableSeats
-                                            // $value->itineraries[0]->duration
-                                            // $value->itineraries[0]->segments
-                                            // echo '</pre>';
                                         @endphp
                                         <div class="col-md-6 load-item-2">
                                             <a href="{{ url('/offers-detail' . $link . '&id=' . $value->id) }}">
@@ -490,15 +481,21 @@
                                             </a>
                                         </div>
                                     @endforeach
-                                @elseif (isset($hotel_data) && $hotel_data[1]->count > 0 && $type == 'hotel')
+                                @elseif (isset($hotel_data) && $hotel_data[1]['count'] > 0 && $type == 'hotel')
                                     @foreach ($hotel_data[0] as $key => $value)
                                         @php
                                             // echo '<pre>';
+                                            // print_r($_POST);
                                             // print_r($value);
                                             // echo '</pre>';
+
+                                            $hotel_link = '';
+                                            if (isset($_POST['city']) && $_POST['city'] != '') {
+                                                $hotel_link = '?hotelId=' . $value['hotelId'] . '&city='.$_POST['city'].'&radius='.$_POST['radius'].'&rating='.$_POST['rating'].'&type=hotel';
+                                            }
                                         @endphp
                                         <div class="col-md-6 load-item-2">
-                                            <a href="{{ url('/offers-detail') }}">
+                                            <a href="{{ url('/offers-detail' . $hotel_link) }}">
                                                 <div class="popular_box">
                                                     <div class="img">
                                                         <img decoding="async" loading="lazy"
@@ -507,12 +504,12 @@
                                                     <div class="content">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div class="detail">
-                                                                <h2>{{ $value->name }}</h2>
+                                                                <h2>{{ $value['name'] }}</h2>
                                                             </div>
                                                             <div class="detail-rating">
                                                                 <p class="d-flex align-items-center"><img decoding="async"
                                                                         loading="lazy" src="./assets/img/rating_star.png"
-                                                                        alt="rating_star"> {{ $value->rating }}</p>
+                                                                        alt="rating_star"> {{ $value['rating'] }}</p>
                                                             </div>
                                                         </div>
 
@@ -522,11 +519,11 @@
                                                                 <img decoding="async" loading="lazy"
                                                                     src="{{ asset('assets/img/hotel-id.png') }}"
                                                                     alt="plane">
-                                                                <h5>{{ $value->hotelId }}</h5>
+                                                                <h5>{{ $value['hotelId'] }}</h5>
                                                             </div>
                                                             <div class="icons_box text-center">
                                                                 <a
-                                                                    href="{{ 'https://www.google.com/maps?q=' . $value->geoCode->latitude . ',' . $value->geoCode->longitude }}">
+                                                                    href="{{ 'https://www.google.com/maps?q=' . $value['geoCode']['latitude'] . ',' . $value['geoCode']['longitude'] }}">
                                                                     <img decoding="async" loading="lazy"
                                                                         src="{{ asset('assets/img/location.png') }}"
                                                                         alt="hotel">
@@ -537,7 +534,7 @@
                                                                 <img decoding="async" loading="lazy"
                                                                     src="{{ asset('assets/img/distance.png') }}"
                                                                     alt="car">
-                                                                <h5>{{ $value->distance->value . ' ' . $value->distance->unit }}
+                                                                <h5>{{ $value['distance']['value'] . ' ' . $value['distance']['unit'] }}
                                                                 </h5>
                                                             </div>
                                                         </div>
@@ -545,11 +542,11 @@
                                                         <ul>
                                                             @php
                                                                 if (
-                                                                    isset($value->amenities) &&
-                                                                    $value->amenities != ''
+                                                                    isset($value['amenities']) &&
+                                                                    $value['amenities'] != ''
                                                                 ) {
                                                                     $am_count = 1;
-                                                                    foreach ($value->amenities as $amenity) {
+                                                                    foreach ($value['amenities'] as $amenity) {
                                                                         if ($am_count <= 3) {
                                                                             echo '<li>' .
                                                                                 str_replace('_', ' ', $amenity) .

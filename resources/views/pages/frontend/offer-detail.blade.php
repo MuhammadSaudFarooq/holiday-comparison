@@ -5,15 +5,11 @@
         @include('layouts.partials.flight-filter')
         <section class="offer_detail_sec">
             <div class="container">
-                @if (isset($flight_data) && isset($hotel_data) && !empty($flight_data) && !empty($hotel_data))
+                @if (isset($flight_data) && !empty($flight_data) && isset($_GET['type']) && $_GET['type'] == 'flight')
                     @php
                         $index = (int) $_GET['id'] - 1;
                         $flight_detail = $flight_data[1][$index];
                         $flight_extras = $flight_data[2];
-                        // echo '<pre>';
-                        // print_r($flight_data);
-                        // print_r($hotel_data);
-                        // echo '</pre>';
                     @endphp
                     <div class="row align-items-center">
                         <div class="col-md-7">
@@ -21,17 +17,6 @@
                                 <h2>Summer 2024 Holidays</h2>
                             </div>
                         </div>
-                        {{-- <div class="col-md-5">
-                        <div class="sort-data">
-                            <label for="text">Sort By</label>
-                            <select name="sort">
-                                <option value="">Default</option>
-                                <option value="most-popular">Most Popular</option>
-                                <option value="hight-to-low">Price: Hight to Low</option>
-                                <option value="low-to-high">Price: Low to High</option>
-                            </select>
-                        </div>
-                    </div> --}}
                     </div>
                     <div class="inner-data">
                         <div class="detail_box_img">
@@ -49,14 +34,6 @@
                                         echo 'Flight: ' . $formattedDate;
                                     @endphp
                                 </h2>
-                                {{-- <div class="rating">
-                                    <img decoding="async" loading="lazy" src="./assets/img/rating_star_full.png"
-                                        alt="rating_star_full">
-                                    <span>
-                                        4.7
-                                    </span>
-                                </div> --}}
-                                {{-- <a href="#" class="white_btn">View Deal</a> --}}
                             </div>
                         </div>
                         <div class="detail_box-main-cont">
@@ -90,11 +67,6 @@
                                                 <h5>{{ count($flight_detail->itineraries[0]->segments) }} Route
                                                 </h5>
                                             </div>
-                                            {{-- <div class="icons_box text-center">
-                                                <img decoding="async" loading="lazy" src="./assets/img/manbig.png"
-                                                    alt="manbig">
-                                                <h5>4 Activities</h5>
-                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -123,16 +95,24 @@
                                     <div>
                                         <h6>{{ 'Segment: ' . $count }}</h6>
                                         <p>
-                                            <b>Departure (IATA Code):</b> {{ $segment_value->departure->iataCode }}<br />
-                                            <b>Departure Time:</b> {{ $segment_value->departure->at }}<br />
-                                            <b>Arrival (IATA Code):</b> {{ $segment_value->arrival->iataCode }}<br />
-                                            <b>Arrival Time:</b> {{ $segment_value->arrival->iataCode }}<br />
-                                            <b>Number Of Stops:</b> {{ $segment_value->numberOfStops }}<br />
-                                            <b>Carrier Code:</b> {{ $segment_value->carrierCode }}<br />
-                                            <b>Number:</b> {{ $segment_value->number }}<br />
-                                            <b>Aircraft Code:</b> {{ $segment_value->aircraft->code }}<br />
+                                            <b>Departure (IATA Code):</b>
+                                            {{ isset($segment_value->departure->iataCode) ? $segment_value->departure->iataCode : '' }}<br />
+                                            <b>Departure Time:</b>
+                                            {{ isset($segment_value->departure->at) ? $segment_value->departure->at : '' }}<br />
+                                            <b>Arrival (IATA Code):</b>
+                                            {{ isset($segment_value->arrival->iataCode) ? $segment_value->arrival->iataCode : '' }}<br />
+                                            <b>Arrival Time:</b>
+                                            {{ isset($segment_value->arrival->at) ? $segment_value->arrival->at : '' }}<br />
+                                            <b>Number Of Stops:</b>
+                                            {{ isset($segment_value->numberOfStops) ? $segment_value->numberOfStops : '' }}<br />
+                                            <b>Carrier Code:</b>
+                                            {{ isset($segment_value->carrierCode) ? $segment_value->carrierCode : '' }}<br />
+                                            <b>Number:</b>
+                                            {{ isset($segment_value->number) ? $segment_value->number : '' }}<br />
+                                            <b>Aircraft Code:</b>
+                                            {{ isset($segment_value->aircraft->code) ? $segment_value->aircraft->code : '' }}<br />
                                             <b>Operating Carrier Code:</b>
-                                            {{ $segment_value->operating->carrierCode }}<br />
+                                            {{ isset($segment_value->operating->carrierCode) ? $segment_value->operating->carrierCode : '' }}<br />
                                         </p>
                                     </div>
                                     @php
@@ -180,22 +160,139 @@
 
                     <div class="inner-listing-data">
                         <h2>Hotels</h2>
-                        @foreach ($hotel_data[0] as $key => $value)
+                        @foreach ($hotel_data[0]['data'] as $key => $value)
                             <div class="cards">
-                                <h3>{{ $value->name }}</h3>
-                                <b>Rating:</b> {{ $value->rating }}<br />
+                                <h3>{{ $value['name'] }}</h3>
+                                <b>Rating:</b> {{ $value['rating'] }}<br />
                                 <b>Distance:</b>
-                                {{ $value->distance->value . ' ' . $value->distance->unit }}<br />
+                                {{ $value['distance']['value'] . ' ' . $value['distance']['unit'] }}<br />
                                 <b>View Location:</b> <a
-                                    href="{{ 'https://www.google.com/maps?q=' . $value->geoCode->latitude . ',' . $value->geoCode->longitude }}" target="_blank">View</a><br />
-                                <b>Country Code:</b> {{ $value->address->countryCode }}<br />
+                                    href="{{ 'https://www.google.com/maps?q=' . $value['geoCode']['latitude'] . ',' . $value['geoCode']['longitude'] }}"
+                                    target="_blank">View</a><br />
+                                <b>Country Code:</b> {{ $value['address']['countryCode'] }}<br />
                                 <b>Amenities:</b>
-                                @foreach ($value->amenities as $item)
+                                @foreach ($value['amenities'] as $item)
                                     <li>{{ str_replace('_', ' ', $item) }}</li>
                                 @endforeach
                             </div>
                         @endforeach
                     </div>
+                @elseif (isset($hotel_data) && !empty($hotel_data) && isset($_GET['type']) && $_GET['type'] == 'hotel')
+                    <section class="offer_detail_sec">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-md-7">
+                                    <div class="head_one">
+                                        <h2>Summer 2024 Holidays</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inner-data">
+                                <div class="detail_box_img">
+                                    <div class="imgs">
+                                        <img decoding="async" loading="lazy" src="./assets/img/detail_box_img1.jpg"
+                                            alt="detail_box_img1">
+                                    </div>
+                                    <div class="content">
+                                        <h2>{{ $hotel_data['hotel_detail']['name'] }}</h2>
+                                        {{-- <div class="rating">
+                                            <img decoding="async" loading="lazy" src="./assets/img/rating_star_full.png"
+                                                alt="rating_star_full">
+                                            <span>
+                                                {{ $hotel_data['hotel_detail']['rating'] }}
+                                            </span>
+                                        </div> --}}
+                                    </div>
+                                </div>
+                                <div class="detail_box-main-cont hotel-single-page">
+                                    <div class="row my-5">
+                                        <div class="col-md-6">
+                                            <div class="left">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icons_box text-center">
+                                                        <img decoding="async" loading="lazy" src="./assets/img/hotelbig.png"
+                                                            alt="hotelbig">
+                                                        <h5>{{ $hotel_data['hotel_detail']['hotelId'] }}</h5>
+                                                    </div>
+                                                    <div class="icons_box text-center">
+                                                        <a
+                                                            href="{{ 'https://www.google.com/maps?q=' . $hotel_data['hotel_detail']['geoCode']['latitude'] . ',' . $hotel_data['hotel_detail']['geoCode']['longitude'] }}">
+                                                            <img decoding="async" loading="lazy"
+                                                                src="{{ asset('assets/img/location.png') }}"
+                                                                alt="hotel">
+                                                        </a>
+                                                        <h5>Location</h5>
+                                                    </div>
+                                                    <div class="icons_box text-center">
+                                                        <img decoding="async" loading="lazy"
+                                                            src="{{ asset('assets/img/distance.png') }}" alt="car">
+                                                        <h5>{{ $hotel_data['hotel_detail']['distance']['value'] . ' ' . $hotel_data['hotel_detail']['distance']['unit'] }}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="right">
+                                                <div class="d-flex align-items-center justify-content-end ">
+                                                    <div class="price">
+                                                        <small class="star-rating">
+                                                            @php
+                                                                $ratingInt =
+                                                                    (int) $hotel_data['hotel_detail']['rating'];
+                                                                if ($ratingInt == 1) {
+                                                                    echo '★☆☆☆☆';
+                                                                } elseif ($ratingInt == 2) {
+                                                                    echo '★★☆☆☆';
+                                                                } elseif ($ratingInt == 3) {
+                                                                    echo '★★★☆☆';
+                                                                } elseif ($ratingInt == 4) {
+                                                                    echo '★★★★☆';
+                                                                } elseif ($ratingInt == 5) {
+                                                                    echo '★★★★★';
+                                                                }
+                                                            @endphp
+                                                        </small>
+                                                        <p>{{ $hotel_data['hotel_detail']['rating'] }}</p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="post-content">
+                                        <h3>Amenities</h3>
+                                        <ul>
+                                            @foreach ($hotel_data['hotel_detail']['amenities'] as $value)
+                                                <li>{{ str_replace('_', ' ', $value) }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inner-listing-data">
+                                <h2>Hotels</h2>
+                                @foreach ($hotel_data['hotel_city'] as $key => $value)
+                                    <div class="cards">
+                                        <h3>{{ $value['name'] }}</h3>
+                                        <b>Rating:</b> {{ $value['rating'] }}<br />
+                                        <b>Distance:</b>
+                                        {{ $value['distance']['value'] . ' ' . $value['distance']['unit'] }}<br />
+                                        <b>View Location:</b> <a
+                                            href="{{ 'https://www.google.com/maps?q=' . $value['geoCode']['latitude'] . ',' . $value['geoCode']['longitude'] }}"
+                                            target="_blank">View</a><br />
+                                        <b>Country Code:</b> {{ $value['address']['countryCode'] }}<br />
+                                        <b>Amenities:</b>
+                                        @foreach ($value['amenities'] as $item)
+                                            <li>{{ str_replace('_', ' ', $item) }}</li>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </section>
                 @else
                     <h3>No data available.</h3>
                 @endif
