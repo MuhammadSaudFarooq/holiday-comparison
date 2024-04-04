@@ -67,7 +67,7 @@
                                 <label for="">Adults</label>
                                 @php
                                     if (isset($_POST['adults']) && $_POST['adults'] != '') {
-                                        $filter_adults = $_POST['date'];
+                                        $filter_adults = $_POST['adults'];
                                     } elseif (isset($_GET['adults']) && $_GET['adults'] != '') {
                                         $filter_adults = $_GET['adults'];
                                     } else {
@@ -82,7 +82,7 @@
                                 <label for="">Children</label>
                                 @php
                                     if (isset($_POST['children']) && $_POST['children'] != '') {
-                                        $filter_children = $_POST['date'];
+                                        $filter_children = $_POST['children'];
                                     } elseif (isset($_GET['children']) && $_GET['children'] != '') {
                                         $filter_children = $_GET['children'];
                                     } else {

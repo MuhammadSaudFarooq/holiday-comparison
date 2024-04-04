@@ -160,22 +160,26 @@
 
                     <div class="inner-listing-data">
                         <h2>Hotels</h2>
-                        @foreach ($hotel_data[0]['data'] as $key => $value)
-                            <div class="cards">
-                                <h3>{{ $value['name'] }}</h3>
-                                <b>Rating:</b> {{ $value['rating'] }}<br />
-                                <b>Distance:</b>
-                                {{ $value['distance']['value'] . ' ' . $value['distance']['unit'] }}<br />
-                                <b>View Location:</b> <a
-                                    href="{{ 'https://www.google.com/maps?q=' . $value['geoCode']['latitude'] . ',' . $value['geoCode']['longitude'] }}"
-                                    target="_blank">View</a><br />
-                                <b>Country Code:</b> {{ $value['address']['countryCode'] }}<br />
-                                <b>Amenities:</b>
-                                @foreach ($value['amenities'] as $item)
-                                    <li>{{ str_replace('_', ' ', $item) }}</li>
-                                @endforeach
-                            </div>
-                        @endforeach
+                        @if ($hotel_data[0] != false)
+                            @foreach ($hotel_data[0]['data'] as $key => $value)
+                                <div class="cards">
+                                    <h3>{{ $value['name'] }}</h3>
+                                    <b>Rating:</b> {{ $value['rating'] }}<br />
+                                    <b>Distance:</b>
+                                    {{ $value['distance']['value'] . ' ' . $value['distance']['unit'] }}<br />
+                                    <b>View Location:</b> <a
+                                        href="{{ 'https://www.google.com/maps?q=' . $value['geoCode']['latitude'] . ',' . $value['geoCode']['longitude'] }}"
+                                        target="_blank">View</a><br />
+                                    <b>Country Code:</b> {{ $value['address']['countryCode'] }}<br />
+                                    <b>Amenities:</b>
+                                    @foreach ($value['amenities'] as $item)
+                                        <li>{{ str_replace('_', ' ', $item) }}</li>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        @else
+                            <p>No hotel found.</p>
+                        @endif
                     </div>
                 @elseif (isset($hotel_data) && !empty($hotel_data) && isset($_GET['type']) && $_GET['type'] == 'hotel')
                     <section class="offer_detail_sec">

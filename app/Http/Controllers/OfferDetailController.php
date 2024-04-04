@@ -76,8 +76,8 @@ class OfferDetailController extends Controller
                 $city = $_GET['destinationLocationCode'];
                 $radius = 5;
                 $radiusUnit = 'KM';
-                $amenities = 'SWIMMING_POOL, SPA, FITNESS_CENTER, AIR_CONDITIONING, RESTAURANT, PARKING, PETS_ALLOWED, AIRPORT_SHUTTLE, BUSINESS_CENTER, DISABLED_FACILITIES, WIFI, MEETING_ROOMS, NO_KID_ALLOWED, TENNIS, GOLF, KITCHEN, ANIMAL_WATCHING, BABY-SITTING, BEACH, CASINO, JACUZZI, SAUNA, SOLARIUM, MASSAGE, VALET_PARKING, BAR or LOUNGE, KIDS_WELCOME, NO_PORN_FILMS, MINIBAR, TELEVISION, WI-FI_IN_ROOM, ROOM_SERVICE, GUARDED_PARKG, SERV_SPEC_MENU';
-                $rating = '1, 2, 3, 4, 5';
+                $amenities = 'SWIMMING_POOL,SPA,FITNESS_CENTER,AIR_CONDITIONING,RESTAURANT,PARKING,PETS_ALLOWED,AIRPORT_SHUTTLE,BUSINESS_CENTER,DISABLED_FACILITIES,WIFI,MEETING_ROOMS,NO_KID_ALLOWED,TENNIS,GOLF,KITCHEN,ANIMAL_WATCHING,BABY-SITTING,BEACH,CASINO,JACUZZI,SAUNA,SOLARIUM,MASSAGE,VALET_PARKING,BAR or LOUNGE,KIDS_WELCOME,NO_PORN_FILMS,MINIBAR,TELEVISION,WI-FI_IN_ROOM,ROOM_SERVICE,GUARDED_PARKG,SERV_SPEC_MENU';
+                $rating = '1,2,3,4,5';
                 $hotelSource = 'ALL';
                 $hotel_by_city_url = "https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city?cityCode=" . $city . "&radius=" . $radius . "&radiusUnit=" . $radiusUnit . "&amenities=" . $amenities . "&ratings=" . $rating . "&hotelSource=" . $hotelSource;
 
@@ -88,6 +88,9 @@ class OfferDetailController extends Controller
                 if ($response->successful()) {
                     $hotels = $response->json();
                     $data['hotel_data'][] = $hotels;
+                }
+                else {
+                    $data['hotel_data'][] = false;
                 }
                 // .\Get Hotel List
 
