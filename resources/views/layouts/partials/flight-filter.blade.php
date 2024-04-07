@@ -25,7 +25,7 @@
                         <div class="select_opt">
                             <div class="box1">
                                 <label for="">Departing From?</label>
-                                <select name="airport" required>
+                                <select name="airport" id="airport" required>
                                     <option value="" disabled selected>Select departure airport</option>
                                     @foreach ($iata_codes as $key => $value)
                                         <option value="{{ $value['iata'] }}"
